@@ -5,7 +5,7 @@ public class SecondLifeBattery extends Baterai {
     private String lokasiInstalasi;
 
     public SecondLifeBattery(String idBaterai, double kapasitasDesain, String jenisKimia, String idSertifikat, String lokasiInstalasi) {
-        super(idBaterai, kapasitasDesain, jenisKimia);
+        super(idBaterai, kapasitasDesain, jenisKimia, kapasitasDesain);
         this.idSertifikat = idSertifikat;
         this.lokasiInstalasi = lokasiInstalasi;
     }
@@ -25,4 +25,12 @@ public class SecondLifeBattery extends Baterai {
         System.out.println("ID Sertifikat    : " + idSertifikat);
         System.out.println("Lokasi Instalasi : " + lokasiInstalasi);
     }
+
+	public void setLokasiInstalasi(String string) {
+		
+	}
+
+	public void kurangiEnergi(double totalKonsumsi) {
+		
+	}
 }
