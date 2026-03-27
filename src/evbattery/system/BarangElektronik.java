@@ -1,11 +1,13 @@
 package evbattery.system;
 
-public class ElektronikRumah {
+public class BarangElektronik {
 	private String nama;
+	private int barangid;
 	private double konsumsiWatt;
 	
-	public ElektronikRumah(String nama, double konsumsiWatt) {
+	public BarangElektronik(String nama, double konsumsiWatt, int barangid) {
 		this.nama = nama;
+		this.barangid = barangid; 
 		this.konsumsiWatt = konsumsiWatt;
 	}
 	
@@ -14,4 +16,5 @@ public class ElektronikRumah {
 	}
 	
 	public String getNama() { return nama; }
+	public double getKonsumsiWatt() { return konsumsiWatt; }
 }

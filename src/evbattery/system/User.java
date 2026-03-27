@@ -22,13 +22,14 @@ public class User {
     }
     
     public void displayInfoLengkap() {
-    	System.out.println("\n========= INFO USER =========");
+        System.out.println("\n========= INFO USER =========");
         System.out.println("Nama   : " + nama);
         System.out.println("Peran  : " + peran);
         System.out.println("Daftar Baterai Milik User:");
         for (Baterai b : daftarBaterai) {
             b.cekStatus();
-            System.out.println("Sisa Energi Saat Ini: " + String.format("%.2f", b.getKapasitasSekarang()) + " kWh");
+            System.out.println("Sisa Energi Saat Ini       : " + String.format("%.2f", b.getKapasitasSekarang()) + " kWh");
+            System.out.println("Jumlah Perangkat Terhubung : " + b.getDaftarElektronik().size());
             System.out.println("-----------------------------");
         }
     }
