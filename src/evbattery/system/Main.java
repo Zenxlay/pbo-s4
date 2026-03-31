@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        List<User> daftarPengguna = new ArrayList<>();
+        List<User> daftarPengguna = DataManager.muatData();
         boolean isRunning = true;
 
         System.out.println("Selamat datang di Sistem Manajemen Baterai Second Life!");
@@ -128,7 +128,11 @@ public class Main {
                     break;
 
                 case "0":
-                    // --- Keluar ---
+                    System.out.println("\nMenyimpan data ke database lokal...");
+                    
+                    // BARU! Menyimpan semua data list ke dalam file JSON sebelum keluar
+                    DataManager.simpanData(daftarPengguna);
+                    
                     System.out.println("Terima kasih telah menggunakan sistem ini. Selamat tinggal!");
                     isRunning = false;
                     break;
