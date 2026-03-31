@@ -16,9 +16,23 @@ public class User {
         this.daftarBaterai = new ArrayList<>();
     }
 
+    public String getNama() {
+        return this.nama;
+    }
+    
+    public List<Baterai> getDaftarBaterai() {
+        return this.daftarBaterai;
+    }
+    
     public void tambahBaterai(Baterai baterai) {
         this.daftarBaterai.add(baterai);
         System.out.println("Baterai " + baterai.getIdBaterai() + " ditambahkan ke user " + this.nama);
+    }
+    
+    public void nyalakanSemuaBaterai(int durasiJam) {
+        for (Baterai b : daftarBaterai) {
+            b.nyalakanSemuaPerangkat(durasiJam);
+        }
     }
     
     public void displayInfoLengkap() {
