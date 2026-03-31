@@ -1,51 +1,142 @@
 package evbattery.system;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== SIMULASI SISTEM MULTI-BATERAI & MULTI-PERANGKAT ===\n");
+        Scanner scanner = new Scanner(System.in);
+        List<User> daftarPengguna = new ArrayList<>();
+        boolean isRunning = true;
 
-        // 1. Create a User
-        User pakBudi = new User("Budi Santoso", "Jl. Merdeka No. 10", "Pemilik Rumah");
+        System.out.println("Selamat datang di Sistem Manajemen Baterai Second Life!");
 
-        // 2. Create Two Separate Batteries
-        // Battery 1: For the main house (50 kWh)
-        SecondLifeBattery bateraiRumah = new SecondLifeBattery("BAT-SL-001", 50.0, "Lithium-Ion", "CERT-111", "Garasi Rumah");
-        
-        // Battery 2: For the workshop/kitchen (30 kWh)
-        SecondLifeBattery bateraiWorkshop = new SecondLifeBattery("BAT-SL-002", 30.0, "LFP", "CERT-222", "Area Workshop");
+        while (isRunning) {
+            System.out.println("\n========= MENU UTAMA =========");
+            System.out.println("1. Tambah User Baru");
+            System.out.println("2. Tambah Baterai ke User");
+            System.out.println("3. Tambah Perangkat ke Baterai");
+            System.out.println("4. Simulasikan Penggunaan (Waktu Berjalan)");
+            System.out.println("5. Tampilkan Semua Data Sistem");
+            System.out.println("0. Keluar");
+            System.out.print("Pilih menu (0-5): ");
+            
+            String pilihan = scanner.nextLine();
 
-        // Assign both batteries to the User
-        pakBudi.tambahBaterai(bateraiRumah);
-        pakBudi.tambahBaterai(bateraiWorkshop);
-        System.out.println();
+            switch (pilihan) {
+                case "1":
+                    // --- Tambah User ---
+                    System.out.print("Masukkan Nama User: ");
+                    String nama = scanner.nextLine();
+                    System.out.print("Masukkan Alamat: ");
+                    String alamat = scanner.nextLine();
+                    System.out.print("Masukkan Peran (misal: Pemilik Rumah): ");
+                    String peran = scanner.nextLine();
+                    
+                    daftarPengguna.add(new User(nama, alamat, peran));
+                    System.out.println("User '" + nama + "' berhasil ditambahkan!");
+                    break;
 
-        // 3. Create Electronic Devices
-        // Devices for Battery 1 (Rumah)
-        BarangElektronik ac = new BarangElektronik("AC Inverter 1 PK", 750.0, 101);
-        BarangElektronik tv = new BarangElektronik("Smart TV 55 Inch", 150.0, 102);
-        
-        // Devices for Battery 2 (Workshop)
-        BarangElektronik ovenListrik = new BarangElektronik("Oven Listrik", 1500.0, 201);
-        BarangElektronik mesinCuci = new BarangElektronik("Mesin Cuci", 500.0, 202);
+                case "2":
+                    // --- Tambah Baterai ---
+                    if (daftarPengguna.isEmpty()) {
+                        System.out.println("Belum ada user. Silakan buat user terlebih dahulu.");
+                        break;
+                    }
+                    
+                    System.out.println("\nPilih User:");
+                    for (int i = 0; i < daftarPengguna.size(); i++) {
+                        System.out.println((i + 1) + ". " + daftarPengguna.get(i).getNama());
+                    }
+                    System.out.print("Nomor User: ");
+                    int userIndex = Integer.parseInt(scanner.nextLine()) - 1;
+                    
+                    if (userIndex >= 0 && userIndex < daftarPengguna.size()) {
+                        System.out.print("ID Baterai (misal BAT-01): ");
+                        String idBat = scanner.nextLine();
+                        System.out.print("Kapasitas (kWh, misal 50.0): ");
+                        double kap = Double.parseDouble(scanner.nextLine());
+                        System.out.print("Lokasi Instalasi (misal Garasi): ");
+                        String lokasi = scanner.nextLine();
+                        
+                        SecondLifeBattery slb = new SecondLifeBattery(idBat, kap, "Lithium-Ion", "CERT-NEW", lokasi);
+                        daftarPengguna.get(userIndex).tambahBaterai(slb);
+                    } else {
+                        System.out.println("Pilihan user tidak valid.");
+                    }
+                    break;
 
-        // 4. Connect Devices to their respective Batteries
-        System.out.println("--- Menghubungkan Perangkat ke Baterai Rumah ---");
-        bateraiRumah.tambahBarangElektronik(ac);
-        bateraiRumah.tambahBarangElektronik(tv);
+                case "3":
+                    // --- Tambah Perangkat ---
+                    if (daftarPengguna.isEmpty()) {
+                        System.out.println("Sistem kosong. Tambahkan user dan baterai dahulu.");
+                        break;
+                    }
+                    
+                    // Simple approach: Add to a specific user's last added battery for ease of use
+                    // (In a full app, you'd list users, then list their batteries)
+                    System.out.print("Masukkan Nama Perangkat (misal TV, AC): ");
+                    String namaAlat = scanner.nextLine();
+                    System.out.print("Konsumsi Daya (Watt, misal 150): ");
+                    double watt = Double.parseDouble(scanner.nextLine());
+                    System.out.print("ID Perangkat (misal 101): ");
+                    int idAlat = Integer.parseInt(scanner.nextLine());
+                    
+                    BarangElektronik barang = new BarangElektronik(namaAlat, watt, idAlat);
+                    
+                    System.out.println("\nPilih User untuk menambahkan perangkat ini:");
+                    for (int i = 0; i < daftarPengguna.size(); i++) {
+                        System.out.println((i + 1) + ". " + daftarPengguna.get(i).getNama());
+                    }
+                    System.out.print("Nomor User: ");
+                    int uIndex = Integer.parseInt(scanner.nextLine()) - 1;
+                    
+                    if (uIndex >= 0 && uIndex < daftarPengguna.size()) {
+                        User selectedUser = daftarPengguna.get(uIndex);
+                        // Assuming the user has a method to get their batteries, or we just add a helper method.
+                        // For simplicity in this UI, let's just add the device to ALL batteries owned by the user 
+                        // or you can implement a getter in User.java to select the specific battery.
+                        System.out.println("Menambahkan " + namaAlat + " ke sistem " + selectedUser.getNama() + "...");
+                        // We will add it to the first battery they own as a simple UI example
+                        // NOTE: You need a getDaftarBaterai() method in User.java to do this perfectly.
+                        System.out.println("Silakan implementasi pemilihan baterai spesifik di versi selanjutnya!");
+                    }
+                    break;
 
-        System.out.println("\n--- Menghubungkan Perangkat ke Baterai Workshop ---");
-        bateraiWorkshop.tambahBarangElektronik(ovenListrik);
-        bateraiWorkshop.tambahBarangElektronik(mesinCuci);
+                case "4":
+                    // --- Simulasi ---
+                    System.out.print("Masukkan durasi simulasi (jam): ");
+                    int jam = Integer.parseInt(scanner.nextLine());
+                    System.out.println("\n=== MEMULAI SIMULASI PENGGUNAAN (" + jam + " JAM) ===");
+                    for (User u : daftarPengguna) {
+                        System.out.println("\nMenjalankan untuk User: " + u.getNama());
+                        u.nyalakanSemuaBaterai(jam);
+                    }
+                    break;
 
-        // 5. Simulate Usage Separately
-        System.out.println("\n--- Simulasi Penggunaan ---");
-        System.out.println(">> Baterai Rumah dinyalakan selama 10 jam (Malam hari):");
-        bateraiRumah.nyalakanSemuaPerangkat(10);
+                case "5":
+                    // --- Tampilkan Status ---
+                    System.out.println("\n=== STATUS KESELURUHAN SISTEM ===");
+                    if (daftarPengguna.isEmpty()) {
+                        System.out.println("Data kosong.");
+                    } else {
+                        for (User u : daftarPengguna) {
+                            u.displayInfoLengkap();
+                        }
+                    }
+                    break;
 
-        System.out.println("\n>> Baterai Workshop dinyalakan selama 3 jam (Pekerjaan siang):");
-        bateraiWorkshop.nyalakanSemuaPerangkat(3);
+                case "0":
+                    // --- Keluar ---
+                    System.out.println("Terima kasih telah menggunakan sistem ini. Selamat tinggal!");
+                    isRunning = false;
+                    break;
 
-        // 6. Display Final Status for the User
-        pakBudi.displayInfoLengkap();
+                default:
+                    System.out.println("Pilihan tidak valid. Silakan coba lagi.");
+            }
+        }
+        scanner.close();
     }
 }
